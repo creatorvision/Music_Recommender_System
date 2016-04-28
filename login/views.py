@@ -1,5 +1,5 @@
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.shortcuts import render , get_object_or_404, redirect
+from django.shortcuts import render , get_object_or_404, redirect, render_to_response
 from django.contrib import messages
 from .models import User
 from .forms import LoginForm
@@ -65,7 +65,21 @@ def User_detail(request, id):
         "instance":instance
     }
     if request.method=='POST' and 'reco' in request.POST:
-        Songs_list(request)
+        #Songs_list(request)
+        c=connection.cursor()
+        try:
+            query="SELECT * from songs"
+            c.execute(query)
+            queryset=c.fetchall()
+            print queryset
+
+            context={
+                "queryset":queryset
+            }
+            c.close()
+            return render(request,"songs_list.html",context)
+        finally:
+            c.close()
     else:
         return render(request,"User_detail.html",context)
 
@@ -77,31 +91,3 @@ def User_delete(request, id=None):
 	instance.delete()
 	#messages.success(request, "Successfully Deleted")
 	return redirect("login:home")
-
-def Songs_list(request):
-    c=connection.cursor()
-    try:
-        c.execute("select * from songs")
-        queryset=namedtuplefetchall(c)   
-        songname=queryset[0][0]
-        #songname=[]
-        #i=0
-        #for row in c.fetchall():
-        #    songname.append(queryset[i].song)
-        #    i=i+1
-        #print songname
-        context={
-
-            "songname":songname
-        }
-        return render(request,"songs_list.html",context)
-
-    finally:
-        c.close()
-
-def namedtuplefetchall(cursor):
-    "Return all rows from a cursor as a namedtuple"
-    desc = cursor.description
-    nt_result = namedtuple('Result', [col[0] for col in desc])
-    return [nt_result(*row) for row in cursor.fetchall()]
-

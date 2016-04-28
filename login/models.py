@@ -29,3 +29,4 @@ class User (models.Model):
 
 	def get_redirect_after_signup(self):
 		return reverse("login:detail", kwargs={"id":self.id})
+

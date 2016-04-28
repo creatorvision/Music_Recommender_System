@@ -20,15 +20,9 @@
   <h1>Songs LIST <small> (comprehensive detail of all the users available in the systems database ) </small></h1>
 </div>
 
-<!-- <ol class="breadcrumb">
-{% for i in Object_list %}
-  <li><a href="#{{i.name}}">{{i.name}}</a></li>
-{% endfor %}
-</ol> -->
-
-{% for i in songname %} 
+{% for val in queryset %} 
  <div class="jumbotron" id="{{i.name}}">
-  <div id="{{i.song}}" style="color:#109fff"><h2>{{i.song}}</h2></div><br/>
+  <div id="{{val.1}}" style="color:#109fff"><h2>{{val.1}}</h2></div><br/>
  </div> 
 {% endfor %}
 
