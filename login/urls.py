@@ -8,7 +8,6 @@ from .views import (
     User_update,
     User_delete,
     User_list,
-    Songs_list,
 )
 
 urlpatterns = [
@@ -17,5 +16,4 @@ urlpatterns = [
     url(r'^(?P<id>\d+)/detail/$',User_detail , name='detail'),
     url(r'^edit/$',User_update, name='update'),
     url(r'^(?P<id>\d+)/delete/$',User_delete ,name='delete'),
-    url(r'^(?P<id>\d+)/songs_list/$',Songs_list, name='songs_list' ),
 ]

@@ -1,9 +1,10 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render , get_object_or_404, redirect
 from django.contrib import messages
 from .models import User
 from .forms import LoginForm
-from django.db import connection
+from django.db import connection, transaction
+from collections import namedtuple
 
 def User_signup(request):
 	#form=LoginForm()
@@ -36,7 +37,7 @@ def User_signup(request):
             instance=User.objects.get(email=email)
             return HttpResponseRedirect(instance.get_redirect_after_signup())
         else :
-            return HttpResponse("Your username and password didn't match. Please refresh this page to go back to the home page")
+            raise Http404("Username and password Combination did not match")
 
     context={
         "form":form,
@@ -64,9 +65,9 @@ def User_detail(request, id):
         "instance":instance
     }
     if request.method=='POST' and 'reco' in request.POST:
-        Songs_list(request,id)
+        Songs_list(request)
     else:
-	return render(request,"User_detail.html",context)
+        return render(request,"User_detail.html",context)
 
 def User_update(request):
 	return HttpResponse("<h1> Welcome to User home Update</h1>")
@@ -77,15 +78,17 @@ def User_delete(request, id=None):
 	#messages.success(request, "Successfully Deleted")
 	return redirect("login:home")
 
-def Songs_list(request, id):
-    instance=get_object_or_404(User,id=id)
+def Songs_list(request):
     c=connection.cursor()
     try:
-        queryset=c.execute('select * from songs')   
-        songname=[]
-        for row in queryset:
-            songname.append(row.song)
-
+        c.execute("select * from songs")
+        queryset=namedtuplefetchall(c)   
+        songname=queryset[0][0]
+        #songname=[]
+        #i=0
+        #for row in c.fetchall():
+        #    songname.append(queryset[i].song)
+        #    i=i+1
         #print songname
         context={
 
@@ -96,5 +99,9 @@ def Songs_list(request, id):
     finally:
         c.close()
 
-
+def namedtuplefetchall(cursor):
+    "Return all rows from a cursor as a namedtuple"
+    desc = cursor.description
+    nt_result = namedtuple('Result', [col[0] for col in desc])
+    return [nt_result(*row) for row in cursor.fetchall()]
 
