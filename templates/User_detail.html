@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block head_title %}
+ {{instance.name}} | {{block.super}}
+{% endblock head_title %}
+
+<style type="text/css">
+{% block style %}
+
+
+@media screen and (min-width:600px) {
+  body {
+    background: url(" {% static "images/background_main.jpeg" %}");
+    background-repeat: no-repeat;
+    background-position: center-fixed;
+    background-size: 110%;
+  }
+  .well{
+
+    background-color: rgba(245, 245, 245, 0.4);
+    margin-top: 130px;
+    font-size: 20;
+    max-width: 50%;
+    /*float: right;*/
+
+  }
+  #reco{
+
+    margin: 10px;
+  }
+}
+
+@media screen and (max-width: 599px) {
+  body{
+    background: #c1bdba;
+      font-family: 'Titillium Web', sans-serif;
+  }
+  .well{
+
+      margin-top: 130px;
+
+  }
+  #reco{
+
+    margin: 10px;
+  }
+}
+
+{% endblock style %}
+</style>
+
+{% block content %}
+
+<div class="well" id="{{i.name}}">
+ <div id="left">
+  <div style="color:#109fff;"><h1><b>{{instance.name}}</b></h1></div><br/>
+  {{ instance.email}}</br>
+  {{ instance.password}}</br>
+  {{ instance.age}}</br>
+  {{ instance.occupation}}</br>
+  {{ instance.nationality}}</br>
+  {{ instance.region}}</br>
+  {{ inastance.gender}}</br>
+  {{ instance.id}}</br></br>
+ </div>
+ <div class="reco">
+   
+  {{ form.non_field_errors }}
+  <form class="form" method="POST" action=''>{% csrf_token %}
+   <button class="btn btn-success btn-lg" name="reco" href="#" role="button"><span class="glyphicon glyphicon-music" aria-hidden="true"></span>  View Song Recommendations</button> 
+   <a class="btn btn-danger btn-lg" href="/login/" role="button"> LOGOUT </a>
+  </form>
+ </div> 
+
+{% endblock content %} 

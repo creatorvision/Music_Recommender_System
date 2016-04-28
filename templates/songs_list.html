@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block head_title %}
+  Songs List | {{block.super}}
+{% endblock head_title %}
+
+<style type="text/css">
+{% block style %}
+
+	.page-header{
+
+			padding-top: 100px;
+	}
+
+{% endblock style %}
+</style>
+
+{% block content %}
+<div class="page-header">
+  <h1>Songs LIST <small> (comprehensive detail of all the users available in the systems database ) </small></h1>
+</div>
+
+<!-- <ol class="breadcrumb">
+{% for i in Object_list %}
+  <li><a href="#{{i.name}}">{{i.name}}</a></li>
+{% endfor %}
+</ol> -->
+
+{% for i in songname %} 
+ <div class="jumbotron" id="{{i.name}}">
+  <div id="{{i.song}}" style="color:#109fff"><h2>{{i.song}}</h2></div><br/>
+ </div> 
+{% endfor %}
+
+{% endblock content %}
