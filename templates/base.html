@@ -1,5 +1,5 @@
 {% load staticfiles %}
-<html>
+<html ng-app="ui.bootstrap.demo">
 <meta charset="UTF-8">
 <head>
   <title> {% block head_title %} Music_Recommendation_System  {% endblock head_title %}</title>
@@ -12,6 +12,7 @@
   <link rel="stylesheet" type="text/css" href=" {% static "css/bootstrap/bootstrap-theme.min.css.map" %}"/>
   <link rel="stylesheet" type="text/css" href=" {% static "css/bootstrap/bootstrap.css.map" %}"/>
   <link rel="stylesheet" type="text/css" href=" {% static "css/bootstrap/bootstrap.min.css.map" %}"/>
+  {% block load %}{% endblock load %}
 
   
   {% block style_load %}{% endblock style_load %}
@@ -46,7 +47,7 @@
 
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-    <script src="(% static "js/bootstrap/bootstrap.min.js" %}"></script>
+    <script src="{% static "js/bootstrap/bootstrap.min.js" %}"></script>
 
 
 </div>

@@ -1,8 +1,16 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 
 {% block head_title %}
   Songs List | {{block.super}}
 {% endblock head_title %}
+
+{% block load %}
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>
+<script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.12.0.js"></script>
+<script src="{% static "js/rating.js" %}"></script>
+<link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+{% endblock load %}
 
 <style type="text/css">
 {% block style %}
@@ -17,13 +25,46 @@
 
 {% block content %}
 <div class="page-header">
-  <h1>Songs LIST <small> (comprehensive detail of all the users available in the systems database ) </small></h1>
+  <h1>Songs LIST <small> (comprehensive detail of all the Songs available in the systems database ) </small></h1>
 </div>
 
-{% for val in queryset %} 
- <div class="jumbotron" id="{{i.name}}">
-  <div id="{{val.1}}" style="color:#109fff"><h2>{{val.1}}</h2></div><br/>
+<!-- {% for val in queryset %} 
+ <div class="jumbotron" id="{{var.0}}">
+  <div style="color:#109fff"><h2>{{val.0}}</h2></div></br>
+  <h5>{{val.1}}</h5>
+  <h6>{{val.2}}</h6>
  </div> 
+{% endfor %} -->
+<script>
+    angular.module('ui.bootstrap.demo').config(function($interpolateProvider) {
+    $interpolateProvider.startSymbol('{[{');
+    $interpolateProvider.endSymbol('}]}');
+    });
+</script>
+
+{% for val in queryset %}
+{% cycle "<div class='row'>" "" ""%}
+  <div class="col-sm-6 col-md-4">
+    <div class="thumbnail">
+     <!--  <img src="..." alt="..."> -->
+      <div class="caption">
+        <div style="color:#109fff"><h2>{{val.0}}</h2></div></br>
+        <h5>{{val.1}}</h5>
+        <h6>{{val.2}}</h6>
+        <p>
+          <div ng-controller="RatingDemoCtrl">
+            <h4>Rating</h4>
+            <rating ng-model="rate" max="max" readonly="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null"></rating>
+            <span class="label" ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}" ng-show="overStar && !isReadonly">{[{percent}]} %</span></br>
+            <pre style="margin:15px 0;">Rate: <b>{[{rate}]}</b> </pre> <!-- - Readonly is: <i>{[{isReadonly}]}</i> - Hovering over: <b>{[{overStar || "none"}]}</b></pre> -->
+            <button class="btn btn-sm btn-danger" ng-click="rate = 0" ng-disabled="isReadonly">Clear</button>
+            </div></br>
+            <a href="#" class="btn btn-primary" role="button">Feedback</a>
+        </p>
+      </div>
+    </div>
+  </div>
+{% cycle "" "" "</div>" %}
 {% endfor %}
 
 {% endblock content %}
