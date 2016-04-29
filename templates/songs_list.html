@@ -37,29 +37,63 @@
 {% endfor %} -->
 <script>
     angular.module('ui.bootstrap.demo').config(function($interpolateProvider) {
-    $interpolateProvider.startSymbol('{[{');
-    $interpolateProvider.endSymbol('}]}');
+    $interpolateProvider.startSymbol('{$');
+    $interpolateProvider.endSymbol('$}');
     });
 </script>
+<script type="text/javascript">
+  function savefedback(){
 
-{% for val in queryset %}
+  }
+</script>
+
+{% for val in querysetSong %}
 {% cycle "<div class='row'>" "" ""%}
   <div class="col-sm-6 col-md-4">
     <div class="thumbnail">
      <!--  <img src="..." alt="..."> -->
       <div class="caption">
-        <div style="color:#109fff"><h2>{{val.0}}</h2></div></br>
+        <div style="color:#109fff"><h3>{{val.0}}</h3></div></br>
         <h5>{{val.1}}</h5>
         <h6>{{val.2}}</h6>
         <p>
           <div ng-controller="RatingDemoCtrl">
             <h4>Rating</h4>
             <rating ng-model="rate" max="max" readonly="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null"></rating>
-            <span class="label" ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}" ng-show="overStar && !isReadonly">{[{percent}]} %</span></br>
-            <pre style="margin:15px 0;">Rate: <b>{[{rate}]}</b> </pre> <!-- - Readonly is: <i>{[{isReadonly}]}</i> - Hovering over: <b>{[{overStar || "none"}]}</b></pre> -->
+            <span class="label" ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}" ng-show="overStar && !isReadonly">{$percent$} %</span></br>
+            <pre style="margin:15px 0;">Rate: <b>{$rate$}</b> </pre>
+            <div id="valuetoatempvariable" style="display: none;">{{temp}}={$rate$}</div>
+           
+            <!-- {% with "rate" as temp %}
+            <div>{{temp}}</div>
+            {% endwith %} -->
+                    
             <button class="btn btn-sm btn-danger" ng-click="rate = 0" ng-disabled="isReadonly">Clear</button>
             </div></br>
-            <a href="#" class="btn btn-primary" role="button">Feedback</a>
+            <div class="well">         
+                <h4>Please provide the feedback about this recommendation</h4>
+                <div class="alert alert-info">
+                  <div class="form-inline">
+                    <label class="control-label">Rate this recommendation regarding this song : </label>
+                  <label class="radio">
+                    <input value="1" type="radio">Excellent
+                  </label></br>
+                  <label class="radio">
+                    <input value="2" type="radio">Good
+                  </label></br>
+                  <label class="radio">
+                    <input value="3" type="radio">Satisfied
+                  </label></br>
+                  <label class="radio">
+                    <input value="4" type="radio">Un Satisfied
+                  </label></br>
+                  <label class="radio">
+                    <input value="5" type="radio">Poor
+                  </label></br>
+              </div>
+            </div>
+            <a href="#" class="btn btn-primary" role="button" onclick="savefedback()">Feedback</a>
+          </div><!-- End of RatingDemoCtrl  -->
         </p>
       </div>
     </div>

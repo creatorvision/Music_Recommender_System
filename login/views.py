@@ -70,11 +70,15 @@ def User_detail(request, id):
         try:
             query="SELECT * from songs"
             c.execute(query)
-            queryset=c.fetchall()
-            # print queryset
-            ratingset=[]
+            querysetSong=c.fetchall()
+
+            feedback=dict()          
+            ratingset=dict()
             ncontext={
-                "queryset":queryset
+            
+                "feedback":feedback,
+                "ratingset":ratingset,
+                "querysetSong":querysetSong
             }
             c.close()
             return render(request,"songs_list.html",ncontext)
