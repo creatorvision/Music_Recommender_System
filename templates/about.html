@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block head_title %}
+  About | {{block.super}}
+{% endblock head_title %}
+
+{% block style_load %}
+ <link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
+{% endblock style_load %}
+
+<style type="text/css">
+{% block style %}
+
+@media screen and (min-width:600px) {
+	img {
+		border: 1px solid #ddd;
+    	border-radius: 4px;
+    	padding: 4px;
+    	padding-left: 10px;
+    	margin-top: 6%;
+    	max-width: 100%;
+    	height: 97%;
+    	align: middle;
+	}
+	.aimage{
+
+		padding-top: 100px;
+	}
+}
+
+@media screen and (max-width: 599px) {
+	.aimage{
+		background: #c1bdba;
+  		font-family: 'Titillium Web', sans-serif;
+	}
+}
+
+{% endblock style %}
+</style>
+
+{% block content %}
+	<div class="aimage">
+		<h3><b><u><i>Brief description of our Project :</i></u></b></h3>
+		<img src="{% static "images/about.png" %}">
+	</div>
+{% endblock content %}
+

@@ -16,19 +16,11 @@
 {% block style %}
 
   .page-header{
-    padding-top: 100px;
+      padding-top: 100px;
   }
   #well{
     margin-top: 100px;
     padding-top: 100px;
-    margin-bottom: 100px;
-    padding-bottom: 100px;
-  }
-  .thumbnail{
-    margin: 10%;
-  }
-  #feedbackform{
-    padding: 100px;
   }
 
 {% endblock style %}
@@ -36,9 +28,16 @@
 
 {% block content %}
 <div class="page-header">
-  <h1>Recommended Songs List <small>( List of songs based on our recommendation algorithm ) :</small></h1>
+  <h1>Songs LIST <small> (comprehensive detail of all the Songs available in the systems database ) </small></h1>
 </div>
 
+<!-- {% for val in queryset %} 
+ <div class="jumbotron" id="{{var.0}}">
+  <div style="color:#109fff"><h2>{{val.0}}</h2></div></br>
+  <h5>{{val.1}}</h5>
+  <h6>{{val.2}}</h6>
+ </div> 
+{% endfor %} -->
 <script>
     angular.module('ui.bootstrap.demo').config(function($interpolateProvider) {
     $interpolateProvider.startSymbol('{$');
@@ -91,29 +90,18 @@
     }
 
   }
-  
-  function freq(i){
-    var index=document.getElementById('distinct').value;
-    alert(index);
-  }
-
-
 </script>
 
-<div class="well">
-{% for val in SongList %}
+<div class="well">         
+{% for val in querysetSong %}
 <!-- {% cycle "<div class='row'>" "" ""%} -->
   <div class="col-sm-6 col-md-4">
     <div class="thumbnail">
      <!--  <img src="..." alt="..."> -->
       <div class="caption">
-        <div class="freq" style="color:#109fff">
-          <script type="text/javascript">var i={{forloop.counter}};</script>
-          <input id="distinct" type="text" value={{forloop.counter}}></input>
-          <a href="#" class="test" onclick="freq(i)"><b><h4>{{val.1}}</h4></b></a>
-        </div></br>
-        <!--<h5>{{val.2}}</h5>
-        <h6>{{val.3}}</h6>-->
+        <div style="color:#109fff"><h4>{{val.0}}. {{val.1}}</h4></div></br>
+        <h5>{{val.2}}</h5>
+        <h6>{{val.3}}</h6>
         <p>
               <div ng-controller="RatingDemoCtrl">
                 <h4>Rating</h4>
@@ -135,35 +123,33 @@
   </div> <!--col-sm-6 col-md-4-->
 <!-- {% cycle "" "" "</div>" %} -->
 {% endfor %}
-
+</br></br>
     <div class="alert alert-info">
-      <div class="form-inline" id="feedbackForm">
-        <label class="control-label">Please provide the feedback about this recommendation (song) : </label></br>
-        <label class="radio">
-          <input value="1" id="f1" name="feedback" type="radio">Excellent
-        </label></br>
-        <label class="radio">
-          <input value="2" id="f2" name="feedback" type="radio">Good
-        </label></br>                                                                   
-        <label class="radio">
-          <input value="3" id="f3" name="feedback" type="radio">Satisfied
-        </label></br>
-        <label class="radio">
-          <input value="4" id="f4" name="feedback" type="radio">Un Satisfied
-        </label></br>
-        <label class="radio">
-          <input value="5" id="f5" name="feedback" type="radio">Poor
-        </label></br></br>
-        <a href="#" class="btn btn-primary" id ="feedbackbutton" role="button" onclick="savefeedbackval()">Feedback</a>
-      </div>
+          <div class="form-inline" id="feedbackForm">
+            <label class="control-label">Please provide the feedback about this recommendation (song) : </label></br>
+            <label class="radio">
+                <input value="1" id="f1" name="feedback" type="radio">Excellent
+            </label></br>
+            <label class="radio">
+              <input value="2" id="f2" name="feedback" type="radio">Good
+            </label></br>                                                                   
+            <label class="radio">
+              <input value="3" id="f3" name="feedback" type="radio">Satisfied
+            </label></br>
+            <label class="radio">
+              <input value="4" id="f4" name="feedback" type="radio">Un Satisfied
+            </label></br>
+            <label class="radio">
+              <input value="5" id="f5" name="feedback" type="radio">Poor
+            </label></br></br>
+            <a href="#" class="btn btn-primary" id ="feedbackbutton" role="button" onclick="savefeedbackval()">Feedback</a>
+          </div>
 
-      <div id="2" style="display:none;">
-        <p><b>Thanks you For the Feedback</b></p>
-      </div>
+         <div id="2" style="display:none;">
+          <p><b>Thanks you For the Feedback</b></p>
+        </div>
     </div><!-- End of alert alert-info-->
-  </div><!-- End of Well -->
-
-
+</div><!-- End of well-->
 
 
 {% endblock content %}

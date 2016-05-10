@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block head_title %}
+  Contact-Us | {{block.super}}
+{% endblock head_title %}
+
+<style type="text/css">
+{% block style %}
+
+	@media screen and (min-width:600px) {
+		.developers{
+
+  			margin-top: 10%;
+  		}
+	}
+
+	@media screen and (max-width: 599px) {
+		.developers{
+
+  			margin-top: 32%;
+ 		}
+	}
+  
+{% endblock style %}
+</style>
+
+{% block content %}
+<div class='developers'>
+	<div class="jumbotron">
+	  <h1>Shivang Gupta</h1>
+	  <p> Y12UC243 | CSE | Developer | creatorvision03@gmail.com | +918740075367</p>
+	</div>
+	<div class="jumbotron">
+	  <h1>Rahul Agrawal</h1>
+	  <p> Y12UC203 | CCE | Developer | agrawalrahul141995@gmail.com | +919530075471</p>
+	</div>
+</div>
+{% endblock content %}
+
