@@ -21,7 +21,7 @@
     background-color: rgba(245, 245, 245, 0.4);
     margin-top: 130px;
     font-size: 20;
-    max-width: 50%;
+    max-width: 60%;
     /*float: right;*/
 
   }
@@ -57,10 +57,10 @@
   <div style="color:#109fff;"><h1><b>{{instance.name}}</b></h1></div><br/>
   Email: {{ instance.email}}</br>
   <!-- {{ instance.password}}</br> -->
-  Age: {{ instance.age}}</br>
   Occupation : {{ instance.occupation}}</br>
   Nationality : {{ instance.nationality}}</br>
   Religion : {{ instance.region}}</br>
+  Age : {{ instance.age}}</br>
   Gender : {{ instance.gender}}</br>
   UserId : {{ instance.id}}</br></br>
  </div>
@@ -68,8 +68,10 @@
    
   {{ form.non_field_errors }}
   <form class="form" method="POST" action=''>{% csrf_token %}
-   <button class="btn btn-success btn-lg" name="reco" href="#" role="button"><span class="glyphicon glyphicon-music" aria-hidden="true"></span>  View Song Recommendations</button> 
-   <a class="btn btn-danger btn-lg" href="/login/" role="button"> LOGOUT </a>
+   <button class="btn btn-success btn-md" name="reco" href="#" role="button"><span class="glyphicon glyphicon-music" aria-hidden="true"></span>  View Song Recommendations</button> 
+   <button class="btn btn-info btn-md" name="changep" role="button">Change Password</button>
+   <button class="btn btn-info btn-md" name="playlist" role="button">My PlayList</button>
+   <a class="btn btn-danger btn-md" href="/login/" role="button"> LOGOUT </a>
   </form>
  </div> 
 

@@ -71,7 +71,38 @@ def User_detail(request, id):
         "form":form,
         "instance":instance
     }
+    if request.method=='POST' and 'playlist' in request.POST:
+
+        c=connection.cursor()
+        try:
+            c.execute("select SongId from rating where UserId=%s",[id])
+            Song_Id=c.fetchall()
+            songListend =[]
+            for Usongid in Song_Id:
+                c.execute("select SongName from songs where SongId=%s",[Usongid[0]])
+                songNameList=c.fetchone()
+                print songNameList
+                songNameList= unicodedata.normalize('NFKD', songNameList[0]).encode('ascii','ignore')
+                songListend.append(songNameList)
+            c.execute("select name from login_user where id=%s",[id])
+            Uname=c.fetchone()
+            Uname= unicodedata.normalize('NFKD', Uname[0]).encode('ascii','ignore')
+            print Uname
+
+            pcontext={
+
+                "songListend":songListend,
+                "Uname":Uname,
+
+            }
+            return render(request,"myplaylist.html",pcontext)
+            c.close()
+        finally:
+            c.close()
+
+
     if request.method=='POST' and 'reco' in request.POST:
+
         freq =0
         c=connection.cursor()
         c.execute("select sum(frequency) from rating where UserId=%s",[id])
@@ -94,7 +125,7 @@ def User_detail(request, id):
                         songList = c.fetchall()
                         #print songList
                         for song in songList:
-                            songRating[song[0]] = song[1];
+                            songRating[song[0]] = song[1]
                             #print songRating
                         songs[Uid] = songRating
             finally:
@@ -109,10 +140,14 @@ def User_detail(request, id):
             'nishant': {'party all night': 3.5, 'after party': 4.0,'bandeya': 3.5, 'agar tum saath': 3.5, '21 guns':2.0, 'wake me up':2.5, 'party tonight':3.5, 'kabhi kabhi': 2.5,'aanewala pal': 1.0},
             'test': {'jiya ho':3.0}}
             '''
+            
 
             ID = unicodedata.normalize('NFKD', id).encode('ascii','ignore')
+            print ID
             UIDS = int(ID)
             TEST = getRecommendations(songs,UIDS)
+            temptopmatch = topMatches(songs, UIDS)
+            print temptopmatch
             
             TempTest = []
             c = connection.cursor()
@@ -125,6 +160,7 @@ def User_detail(request, id):
                 tempTuple = (SID[0],name)
                 TempTest.append(tempTuple)
                 
+            print TempTest
             c=connection.cursor()
             try:
                 # query="SELECT * from songs"
@@ -173,7 +209,7 @@ def User_detail(request, id):
                     c.execute("SELECT rating.SongId  FROM rating  ORDER BY frequency DESC LIMIT 6")
                     ids = c.fetchall()
 
-            #print ids[0][0]
+            print ids[0][0]
             TempTest = []
             counter=0
             for IDS in ids:   
@@ -185,7 +221,7 @@ def User_detail(request, id):
                 TempTest.append(tempTuple)
                 counter += 1
             
-            #print TempTest    
+            print TempTest    
             # query="SELECT * from songs"
             # c.execute(query)
             # querysetSong=c.fetchall()
@@ -252,6 +288,13 @@ def getRecommendations(prefs,person,similarity=sim_distance_pearson):
     rankings.sort()
     rankings.reverse( )
     return rankings
+
+def topMatches(prefs,person,n=3,similarity=sim_distance_pearson):
+    scores=[(similarity(prefs,person,other),other) for other in prefs if other!=person]
+    # Sort the list so the highest scores appear at the top
+    scores.sort( )
+    scores.reverse( )
+    return scores[0:n]
 
 def User_update(request):
     return HttpResponse("<h1> Welcome to User home Update</h1>")

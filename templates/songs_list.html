@@ -26,6 +26,7 @@
   }
   .thumbnail{
     margin: 10%;
+    max-height: 300px;
   }
   #feedbackform{
     padding: 100px;
@@ -92,11 +93,17 @@
 
   }
   
-  function freq(i){
-    var index=document.getElementById('distinct').value;
-    alert(index);
+  function freq(){
+    var idList=document.getElementById('distinct').split(" ");
+    alert(idList);
+    var results = [], item;
+    for (var i = 0; i < idList.length; i++) {
+        item = document.getElementById(idList[i]);
+        if (item) {
+            results.push(item);
+        }
+    }
   }
-
 
 </script>
 
@@ -109,14 +116,14 @@
       <div class="caption">
         <div class="freq" style="color:#109fff">
           <script type="text/javascript">var i={{forloop.counter}};</script>
-          <input id="distinct" type="text" value={{forloop.counter}}></input>
-          <a href="#" class="test" onclick="freq(i)"><b><h4>{{val.1}}</h4></b></a>
+          <input id="{{forloop.counter}} distinct"type="text" class="flv" value={{forloop.counter}} readonly ></input>
+          <a target="_blank" href="https://www.youtube.com/watch?v=PiJhv5Ic644" class="test" onload="freq()"><h4>{{val.1}}</h4></a>
         </div></br>
         <!--<h5>{{val.2}}</h5>
         <h6>{{val.3}}</h6>-->
         <p>
               <div ng-controller="RatingDemoCtrl">
-                <h4>Rating</h4>
+                <h5>Rating</h5>
                 <rating ng-model="rate" max="max" readonly="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null"></rating>
                 <span class="label" ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}" ng-show="overStar && !isReadonly">{$percent$} %</span></br>
                 <pre style="margin:15px 0;">Rate: <b>{$rate$}</b> </pre>
@@ -158,7 +165,9 @@
       </div>
 
       <div id="2" style="display:none;">
+        <br/><br/><br/><br/><br/><br/><br/><br/>
         <p><b>Thanks you For the Feedback</b></p>
+        <br/><br/><br/><br/><br/><br/><br/><br/>
       </div>
     </div><!-- End of alert alert-info-->
   </div><!-- End of Well -->

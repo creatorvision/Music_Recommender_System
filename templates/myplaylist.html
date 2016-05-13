@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block head_title %}
+ {{Uname}} PlayList | {{block.super}}
+{% endblock head_title %}
+
+<style type="text/css">
+{% block style %}
+
+	.page-header{
+
+			padding-top: 60px;
+      color: #1B8DE4;
+	}
+  @media screen and (min-width:600px) {
+    body {
+      background: url(" {% static "images/micinstrument.jpeg" %}");
+      background-repeat: no-repeat;
+      background-position: center-fixed;
+      background-size: 100%;
+    }
+  }
+
+  @media screen and (max-width: 599px) {
+    body{
+      background: #c1bdba;
+        font-family: 'Titillium Web', sans-serif;
+    }
+  }
+{% endblock style %}
+</style>
+
+{% block content %}
+<div class="page-header">
+  <h1><b>{{Uname}}'s Playlist :</b></h1>
+</div>
+
+<div class="jumbotron" id="{{i.name}}">
+{% for i in songListend %} 
+  <div id="{{i}}" style="color:#109fff"><h2>{{forloop.counter}}. {{i}}</h2></div><br/>
+{% endfor %}
+</div>
+  
+{% endblock content %}
