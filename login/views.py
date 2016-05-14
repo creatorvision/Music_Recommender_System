@@ -10,6 +10,7 @@ from django.utils.deprecation import RemovedInDjango20Warning
 from django.utils.encoding import force_text
 from django.utils.safestring import SafeBytes
 from math import sqrt
+import random
 import unicodedata
 
 
@@ -111,74 +112,116 @@ def User_detail(request, id):
         print freq[0]>=20
 
         if freq[0]>=20:
-            #Songs_list(request)
-            
-            songs = {}
-            try:
-                c.execute("select UserId from genreliking ")
-                query = c.fetchall()
-                #print query
-                for item in query:
-                    for Uid in item:
-                        songRating = {}
-                        c.execute("select SongId,rating from rating where UserId = %s ",[Uid])
-                        songList = c.fetchall()
-                        #print songList
-                        for song in songList:
-                            songRating[song[0]] = song[1]
-                            #print songRating
-                        songs[Uid] = songRating
-            finally:
-                c.close()
-                
-            # A dictionary of users and the feature count of a small  set of music items
-            '''songs={'dev': {'summer of 69': 3.5, 'numb': 3.5, 'demons': 4.0, 'sugar':4.0, 'main toh jhum':3.5,'in the end': 3.0, 'cloud nine': 3.5, '21 guns':4.0, 'wake me up':4.5, 'broken dreams':3.5, 'kabhi kabhi': 1.5,'aanewala pal': 1.5},
-            'swapnil': {'summer of 69': 3.5, 'numb': 4.0, 'mockingbird': 4.0, 'lose yourself': 3.5,'in the end': 3.5, 'cloud nine': 3.5, '21 guns':4.0, 'wake me up':4.5, 'broken dreams':3.5, 'kabhi kabhi': 1.5,'aanewala pal': 2.0},
-            'kshitij': {'summer of 69': 2.5, 'numb': 2.5,'in the end': 2.0, 'cloud nine': 2.5, 'kabhi kabhi': 3.5,'aanewala pal': 4.5, 'woh shaam':3.5, 'jeena yahan':4.0, 'kuch toh log':3.5, 'duniya bananewale':3.5},
-            'prudhvi': {'summer of 69': 2.5, 'numb': 2.5, 'musaphir': 3.0, 'chalte chalte mere': 3.5,'in the end': 2.0, 'cloud nine': 2.5, 'kabhi kabhi': 3.0,'aanewala pal': 4.0, 'woh shaam':3.5, 'jeena yahan':4.0, 'kuch toh log':3.0, 'duniya bananewale':2.5},
-            'rahul': {'party all night': 3.5, 'after party': 4.0,'bandeya': 3.5, 'agar tum saath': 3.5, '21 guns':2.0, 'wake me up':2.5, 'party tonight':3.5, 'kabhi kabhi': 2.5,'aanewala pal': 1.0, 'tu bin bataye': 4.5, 'raabta': 3.5},
-            'nishant': {'party all night': 3.5, 'after party': 4.0,'bandeya': 3.5, 'agar tum saath': 3.5, '21 guns':2.0, 'wake me up':2.5, 'party tonight':3.5, 'kabhi kabhi': 2.5,'aanewala pal': 1.0},
-            'test': {'jiya ho':3.0}}
-            '''
-            
 
-            ID = unicodedata.normalize('NFKD', id).encode('ascii','ignore')
-            print ID
-            UIDS = int(ID)
-            TEST = getRecommendations(songs,UIDS)
-            temptopmatch = topMatches(songs, UIDS)
-            print temptopmatch
-            
-            TempTest = []
-            c = connection.cursor()
-            for SID in TEST:
-                temp = list(SID)
-                c.execute("select SongName from songs where SongId=%s",[SID[1]])
-                songName = c.fetchone()
-                name= songName[0]
-                name = unicodedata.normalize('NFKD', name).encode('ascii','ignore')
-                tempTuple = (SID[0],name)
-                TempTest.append(tempTuple)
-                
-            print TempTest
-            c=connection.cursor()
-            try:
-                # query="SELECT * from songs"
-                # c.execute(query)
-                # querysetSong=c.fetchall()
 
-                # feedback=dict()
-                # ratingset=dict()
-                ncontext={
-                               "SongList":TempTest,
+            # Randomizing the Use of two Algorithms:-
+            if random.randint(0,9)>random.randint(0,9):
+                print "random --> first Algorithm"
+                songs = {}
+                try:
+                    c.execute("select UserId from genreliking ")
+                    query = c.fetchall()
+                    #print query
+                    for item in query:
+                        for Uid in item:
+                            songRating = {}
+                            c.execute("select SongId,rating from rating where UserId = %s ",[Uid])
+                            songList = c.fetchall()
+                            #print songList
+                            for song in songList:
+                                songRating[song[0]] = song[1]
+                                #print songRating
+                            songs[Uid] = songRating
+
+                    print songs
+                finally:
+                    c.close()
+                    
+                # A dictionary of users and the feature count of a small  set of music items
+                '''songs={'dev': {'summer of 69': 3.5, 'numb': 3.5, 'demons': 4.0, 'sugar':4.0, 'main toh jhum':3.5,'in the end': 3.0, 'cloud nine': 3.5, '21 guns':4.0, 'wake me up':4.5, 'broken dreams':3.5, 'kabhi kabhi': 1.5,'aanewala pal': 1.5},
+                'swapnil': {'summer of 69': 3.5, 'numb': 4.0, 'mockingbird': 4.0, 'lose yourself': 3.5,'in the end': 3.5, 'cloud nine': 3.5, '21 guns':4.0, 'wake me up':4.5, 'broken dreams':3.5, 'kabhi kabhi': 1.5,'aanewala pal': 2.0},
+                'kshitij': {'summer of 69': 2.5, 'numb': 2.5,'in the end': 2.0, 'cloud nine': 2.5, 'kabhi kabhi': 3.5,'aanewala pal': 4.5, 'woh shaam':3.5, 'jeena yahan':4.0, 'kuch toh log':3.5, 'duniya bananewale':3.5},
+                'prudhvi': {'summer of 69': 2.5, 'numb': 2.5, 'musaphir': 3.0, 'chalte chalte mere': 3.5,'in the end': 2.0, 'cloud nine': 2.5, 'kabhi kabhi': 3.0,'aanewala pal': 4.0, 'woh shaam':3.5, 'jeena yahan':4.0, 'kuch toh log':3.0, 'duniya bananewale':2.5},
+                'rahul': {'party all night': 3.5, 'after party': 4.0,'bandeya': 3.5, 'agar tum saath': 3.5, '21 guns':2.0, 'wake me up':2.5, 'party tonight':3.5, 'kabhi kabhi': 2.5,'aanewala pal': 1.0, 'tu bin bataye': 4.5, 'raabta': 3.5},
+                'nishant': {'party all night': 3.5, 'after party': 4.0,'bandeya': 3.5, 'agar tum saath': 3.5, '21 guns':2.0, 'wake me up':2.5, 'party tonight':3.5, 'kabhi kabhi': 2.5,'aanewala pal': 1.0},
+                'test': {'jiya ho':3.0}}
+                '''
+                
+
+                ID = unicodedata.normalize('NFKD', id).encode('ascii','ignore')
+                print ID
+                UIDS = int(ID)
+                TEST = getRecommendations(songs,UIDS)
+                
+                TempTest = []
+                c = connection.cursor()
+                for SID in TEST:
+                    temp = list(SID)
+                    c.execute("select SongName from songs where SongId=%s",[SID[1]])
+                    songName = c.fetchone()
+                    name= songName[0]
+                    name = unicodedata.normalize('NFKD', name).encode('ascii','ignore')
+                    tempTuple = (SID[0],name)
+                    TempTest.append(tempTuple)
+                    
+                print TempTest
+            else:
+                print "random --> second Algorithm"
+                usergl={}
+                try:
+                    c.execute("select UserId , rock ,pop ,folk ,slow ,romantic ,rhythmic ,energetic ,sexy , lonely , melancholic , beat , soft ,vintage , bizarre , intense , classical , exciting , ballroom , intimate , travel , catchy , cheerful , boring , fast , rap , hypnotic , movement , exotic , countryside from genreliking")
+                    query=c.fetchall()
+                    print query
+                    genre=["rock" ,"pop" ,"folk" ,"slow" ,"romantic" ,"rhythmic" ,"energetic" ,"sexy" , "lonely" , "melancholic" , "beat" , "soft" ,"vintage" , "bizarre" , "intense" , "classical" , "exciting" , "ballroom" , "intimate" , "travel" , "catchy" , "cheerful" , "boring" , "fast" , "rap" , "hypnotic" , "movement" , "exotic" , "countryside"]
+
+                    for item in query:
+                        usergenerdic={}
+                        count=0
+                        for val in genre:
+                            count=count+1
+                            tmp=unicodedata.normalize('NFKD', item[count]).encode('ascii','ignore')
+                            usergenerdic[val]=float(tmp)
+                            # print usergenerdic
+                        usergl[item[0]]=usergenerdic
+                    print usergl
+
+                    c.close()
+                except Exception, e:
+                    raise e
+                finally:
+                    c.close()
+
+                ID = unicodedata.normalize('NFKD', id).encode('ascii','ignore')
+                print ID
+                UIDS = int(ID)
+                TEST = topMatches(usergl,UIDS)
+                print TEST
+                TempTest = []
+                c = connection.cursor()
+                for SID in TEST:
+                    temp = list(SID)
+                    c.execute("select SongName from songs where SongId=%s",[SID[1]])
+                    songName = c.fetchone()
+                    name= songName[0]
+                    name = unicodedata.normalize('NFKD', name).encode('ascii','ignore')
+                    tempTuple = (SID[0],name)
+                    TempTest.append(tempTuple)
+                    
+                print TempTest
+
+                # temptopmatch = topMatches(songs, UIDS)
+                # print temptopmatch            
+            
+            
+            ncontext={
+
+                "SongList":TempTest,
                                # "feedback":feedback,
                                # "ratingset":ratingset,
                                # "querysetSong":querysetSong
-                          }
-                c.close()
-                return render(request,"songs_list.html",ncontext)
-            finally:
-                 c.close()            
+                }
+             
+            return render(request,"songs_list.html",ncontext)           
                                     
         else:
             #Select 6 songs with top most frequncies
